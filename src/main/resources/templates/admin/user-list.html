@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Quản lý Người Dùng (Admin)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .user-table th, .user-table td { border: 1px solid #ccc; padding: 8px; }
+        .user-table { border-collapse: collapse; width: 60%; }
+        .warning { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+<h1>Bảng điều khiển Admin: Quản lý Người Dùng</h1>
+<p class="warning" sec:authorize="hasRole('ADMIN')">Bạn đang đăng nhập với quyền ADMIN.</p>
+
+<p><a th:href="@{/web/todos}">Quay lại Todo List</a></p>
+
+<hr/>
+
+<h2>Danh Sách Người Dùng</h2>
+<table class="user-table">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Username</th>
+        <th>Password (Mã hóa)</th>
+        <th>Hành động</th>
+    </tr>
+    </thead>
+    <p><a th:href="@{/web/admin/users/form}">+ Thêm User Mới</a></p>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.id}">1</td>
+        <td th:text="${user.username}">user@test.com</td>
+        <td th:text="${user.password}">{bcrypt}....</td>
+        <td>
+            <a th:href="@{/web/admin/users/form(id=${user.id})}">Chỉnh sửa</a> |
+            <a th:href="@{/web/admin/users/delete/{id}(id=${user.id})}"
+               onclick="return confirm('CẢNH BÁO: Bạn có chắc chắn muốn xóa User này?')"
+               style="color: red;">Xóa</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${isEditing} ? 'Chỉnh Sửa Người Dùng' : 'Thêm Người Dùng Mới'"></title>
+</head>
+<body>
+<h1 th:text="${isEditing} ? 'Chỉnh Sửa User' : 'Thêm User Mới'">User Form</h1>
+
+<form th:action="@{/web/admin/users/save}" th:object="${user}" method="post">
+
+    <input type="hidden" th:field="*{id}" />
+
+    <label for="username">Username (Email):</label>
+    <input type="email" id="username" th:field="*{username}" required/>
+    <br/><br/>
+
+    <label for="password">Mật khẩu:</label>
+    <input type="password" id="password" th:field="*{password}"
+           th:placeholder="${isEditing} ? 'Để trống nếu không đổi' : 'Mật khẩu bắt buộc'"
+           th:required="${!isEditing}"/>
+    <br/><br/>
+
+    <button type="submit" th:text="${isEditing} ? 'Lưu Thay Đổi' : 'Tạo User'"></button>
+</form>
+
+<p><a th:href="@{/web/admin/users}">Quay lại Danh sách User</a></p>
+</body>
+</html>

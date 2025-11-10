@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Chỉnh Sửa Công Việc</title>
+</head>
+<body>
+<h1>Chỉnh Sửa Công Việc</h1>
+
+<form th:action="@{/web/todos/update/{id}(id=${todo.id})}" th:object="${todo}" method="post">
+
+    <p>ID: <span th:text="*{id}">1</span></p>
+
+    <label for="title">Tiêu đề:</label>
+    <input type="text" id="title" th:field="*{title}" required/>
+    <br/><br/>
+
+    <label for="description">Mô tả:</label>
+    <input type="text" id="description" th:field="*{description}" required/>
+    <br/><br/>
+
+    <label for="completed">Hoàn thành:</label>
+    <input type="checkbox" id="completed" th:field="*{completed}"/>
+    <br/><br/>
+
+    <button type="submit">Lưu Thay Đổi</button>
+</form>
+
+<p><a th:href="@{/web/todos}">Quay lại danh sách</a></p>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh Sách Công Việc</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .todo-list { list-style: none; padding: 0; }
+        .todo-list li { margin-bottom: 10px; padding: 10px; border: 1px solid #ccc; display: flex; justify-content: space-between; align-items: center; }
+        .completed { background-color: #e0ffe0; }
+        .actions a { margin-left: 10px; text-decoration: none; padding: 5px; border: 1px solid; }
+        .logout-form { display: inline-block; }
+    </style>
+</head>
+<body>
+
+<h1>Todo List của bạn</h1>
+<p>
+    Xin chào,
+    <span sec:authentication="name">User</span>!
+    (<span sec:authentication="authorities">ROLE</span>)
+</p>
+<div sec:authorize="hasRole('ADMIN')">
+    | <a th:href="@{/web/admin/users}" style="color: blue;">Quản Lý Người Dùng</a>
+</div>
+<form th:action="@{/logout}" method="post" class="logout-form">
+    <input type="submit" value="Đăng Xuất"/>
+</form>
+
+<hr/>
+
+<h2>Thêm Công Việc Mới</h2>
+<form th:action="@{/web/todos}" th:object="${newTodo}" method="post">
+    <input type="text" th:field="*{title}" placeholder="Tiêu đề" required/>
+    <input type="text" th:field="*{description}" placeholder="Mô tả" required/>
+    <button type="submit">Thêm Todo</button>
+</form>
+
+<hr/>
+
+<h2>Danh Sách Công Việc Hiện Có</h2>
+<ul class="todo-list">
+    <li th:each="todo : ${todos}" th:classappend="${todo.completed} ? 'completed' : ''">
+        <div>
+            <span th:text="${todo.id} + '. ' + ${todo.title}">1. Task Title</span> <br> <br>
+            <span th:text="${todo.description}">Description</span>
+        </div>
+        <div class="actions">
+            <a th:href="@{/web/todos/edit/{id}(id=${todo.id})}" style="color: blue;">Chỉnh sửa</a>
+            <a th:href="@{/web/todos/toggle/{id}(id=${todo.id})}"
+               th:text="${todo.completed} ? 'Chưa Xong' : 'Hoàn Thành'">Toggle</a>
+
+            <a th:href="@{/web/todos/delete/{id}(id=${todo.id})}"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
+               style="color: red;">Xóa</a>
+        </div>
+    </li>
+</ul>
+
+</body>
+</html>
